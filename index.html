@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Ventas de Relojes</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f8ff;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            color: #007bff;
+            margin-top: 20px;
+        }
+        h2 {
+            text-align: center;
+            font-size: 1.5em;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        .container {
+            width: 90%;
+            margin: 0 auto;
+            max-width: 500px;
+        }
+        img {
+            display: block;
+            width: 100px;
+            height: auto;
+            margin: 0 auto 20px auto;
+        }
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            font-size: 1em;
+            margin-bottom: 5px;
+            color: #007bff;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        button {
+            width: 100%;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            font-size: 1em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 15px;
+            text-align: center;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+            font-size: 1em;
+        }
+        td {
+            font-size: 0.9em;
+            color: #333;
+        }
+        .totals {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        .totals p {
+            font-size: 1em;
+            margin: 10px 0;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Control de Ventas</h1>
+        <h2>Venta de Relojes</h2>
+        <img src="reloj.PNG" alt="Imagen de reloj">
+
+        <form id="salesForm">
+            <label for="date">Fecha:</label>
+            <input type="date" id="date" required>
+
+            <label for="purchasePrice">Precio de Compra:</label>
+            <input type="number" id="purchasePrice" step="0.01" required>
+
+            <label for="salePrice">Precio de Venta:</label>
+            <input type="number" id="salePrice" step="0.01" required>
+
+            <button type="submit">Agregar Venta</button>
+        </form>
+
+        <table id="salesTable">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Precio de Compra</th>
+                    <th>Precio de Venta</th>
+                    <th>Ganancia</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <div class="totals">
+            <p>Total Gastado en Compras: <span id="totalSpent">0.00</span></p>
+            <p>Total de Ganancias: <span id="totalProfit">0.00</span></p>
+        </div>
+    </div>
+
+    <script>
+        const salesForm = document.getElementById('salesForm');
+        const salesTableBody = document.querySelector('#salesTable tbody');
+        const totalSpentEl = document.getElementById('totalSpent');
+        const totalProfitEl = document.getElementById('totalProfit');
+
+        let sales = JSON.parse(localStorage.getItem('sales')) || [];
+
+        function updateTable() {
+            salesTableBody.innerHTML = '';
+            let totalSpent = 0;
+            let totalProfit = 0;
+
+            sales.forEach(sale => {
+                const row = document.createElement('tr');
+
+                const dateCell = document.createElement('td');
+                dateCell.textContent = sale.date;
+                row.appendChild(dateCell);
+
+                const purchasePriceCell = document.createElement('td');
+                purchasePriceCell.textContent = sale.purchasePrice.toFixed(2);
+                row.appendChild(purchasePriceCell);
+
+                const salePriceCell = document.createElement('td');
+                salePriceCell.textContent = sale.salePrice.toFixed(2);
+                row.appendChild(salePriceCell);
+
+                const profitCell = document.createElement('td');
+                const profit = sale.salePrice - sale.purchasePrice;
+                profitCell.textContent = profit.toFixed(2);
+                row.appendChild(profitCell);
+
+                totalSpent += sale.purchasePrice;
+                totalProfit += profit;
+
+                salesTableBody.appendChild(row);
+            });
+
+            totalSpentEl.textContent = totalSpent.toFixed(2);
+            totalProfitEl.textContent = totalProfit.toFixed(2);
+        }
+
+        salesForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const date = document.getElementById('date').value;
+            const purchasePrice = parseFloat(document.getElementById('purchasePrice').value);
+            const salePrice = parseFloat(document.getElementById('salePrice').value);
+
+            sales.push({ date, purchasePrice, salePrice });
+            localStorage.setItem('sales', JSON.stringify(sales));
+
+            salesForm.reset();
+            updateTable();
+        });
+
+        // Inicializar tabla
+        updateTable();
+    </script>
+</body>
+</html>
