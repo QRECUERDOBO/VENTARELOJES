@@ -37,6 +37,15 @@
             font-weight: bold;
             color: #FCD34D;
         }
+        select {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
     </style>
 </head>
 <body class="text-white p-4">
@@ -59,7 +68,12 @@
                 
                 <div>
                     <label class="block text-sm font-medium mb-1">Tipo Reloj</label>
-                    <input type="text" id="tipoReloj" required class="w-full p-2 rounded bg-gray-800 border border-gray-700">
+                    <select id="tipoReloj" required class="w-full p-2 rounded bg-gray-800 border border-gray-700 text-white">
+                        <option value="" disabled selected>Selecciona el tipo</option>
+                        <option value="UNISEX">UNISEX</option>
+                        <option value="MUJER">MUJER</option>
+                        <option value="HOMBRE">HOMBRE</option>
+                    </select>
                 </div>
                 
                 <div>
