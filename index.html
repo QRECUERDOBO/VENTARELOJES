@@ -7,8 +7,9 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <style>
         body {
-            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/api/placeholder/800/600');
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('casio.jpg');
             background-size: cover;
+            background-position: center;
             background-attachment: fixed;
             min-height: 100vh;
         }
@@ -20,6 +21,21 @@
         .sale-item:hover {
             transform: scale(1.02);
             transition: all 0.3s ease;
+        }
+        .sale-number {
+            position: absolute;
+            left: -25px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.1);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #FCD34D;
         }
     </style>
 </head>
@@ -111,8 +127,9 @@
 
             ventas.forEach((venta, index) => {
                 const ventaElement = document.createElement('div');
-                ventaElement.className = 'glass p-4 rounded-lg sale-item';
+                ventaElement.className = 'glass p-4 rounded-lg sale-item relative';
                 ventaElement.innerHTML = `
+                    <div class="sale-number">${index + 1}</div>
                     <div class="flex justify-between items-center">
                         <div class="text-lg font-semibold text-yellow-400">${venta.tipoReloj}</div>
                         <div class="text-sm">${formatearFecha(venta.fecha)}</div>
