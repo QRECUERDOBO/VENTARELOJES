@@ -67,6 +67,8 @@
                         <option value="UNISEX">UNISEX</option>
                         <option value="MUJER">MUJER</option>
                         <option value="HOMBRE">HOMBRE</option>
+                        <option value="PANDORAHOMBRE">PANDORAHOMBRE</option>
+                        <option value="PANDORAMUJER">PANDORAMUJER</option>
                     </select>
                 </div>
                 
@@ -116,8 +118,17 @@
                 </tbody>
             </table>
         </div>
+
+          <!-- Resumen de Ganancias -->
+        <div class="glass mt-4 p-4 rounded-lg">
+            <div class="flex justify-between items-center text-lg font-bold">
+                <span>Ganancia Total:</span>
+                <span class="text-green-400" id="gananciaTotal">$0.00</span>
+            </div>
+        </div>
     </div>
 
+        
     <script>
         // Funciones principales
         function toggleForm() {
@@ -145,7 +156,13 @@
             return ventas ? JSON.parse(ventas) : [];
         }
 
-        // Mostrar las ventas en la lista
+
+        // Función para calcular ganancia total
+        function calcularGananciaTotal(ventas) {
+            return ventas.reduce((total, venta) => total + venta.ganancia, 0).toFixed(2);
+        }
+        
+          // Actualizar la función mostrarVentas para incluir el total
         function mostrarVentas() {
             const ventas = cargarVentas();
             const ventasList = document.getElementById('ventasList');
@@ -170,6 +187,9 @@
                 `;
                 ventasList.appendChild(row);
             });
+
+            // Actualizar el total de ganancias
+            document.getElementById('gananciaTotal').textContent = `$${calcularGananciaTotal(ventas)}`;
         }
 
         // Eliminar una venta
